@@ -19,30 +19,14 @@ export const readProductId = (req: Request, res: Response): Response => {
 };
 
 
-const getId = () => {
-
-    if (products.length !== 0) {
-        let nextIndex: number = 0;
-        products.forEach((element: IProduct, index: number) => {
-            const newItem = {
-                ...element,
-                id: index + 1,
-            };
-            products.splice(index, 1, newItem);
-            nextIndex = index + 2;
-        });
-        return nextIndex;
-    }
-    return 1;
-};
-
+let id = 1;
 
 export const createProduct = (req: Request, res: Response) => {
-    const id = getId();
+    
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 365);
     const newProduct: IProduct = {
-        id: id,
+        id: id++,
         ...req.body,
         expirationDate: expirationDate,
     };
@@ -70,7 +54,7 @@ export const updatePartialProduct = (req: Request, res: Response) => {
     const updatedItem = {
         ...item,
         ...req.body,
-        id: item.id, // Manter o mesmo id
+        id: item.id, 
         expirationDate: item.expirationDate 
     };
     products.splice(index, 1, updatedItem);
